@@ -19,7 +19,7 @@ dotenv_1.default.config();
 const getDevApi = ({ endpoint, pagination }) => __awaiter(void 0, void 0, void 0, function* () {
     const params = { per_page: 6, page: pagination, };
     const headers = { api_key: process.env.APIKEY };
-    const { data } = yield axios_1.default.get(`https://dev.to/api/${endpoint}`, {
+    const { data } = yield axios_1.default.get(`https://dev.to/api/${endpoint}/?username=pedrobarreto`, {
         params,
         headers,
     });
