@@ -1,19 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
-import { translate } from '@vitalets/google-translate-api';
-import fs from 'fs';
-import path from 'path';
 import dotenv from 'dotenv';
-import cron from 'node-cron'; 
+import { loadCache, saveCache, getCacheFilePath, scheduleDailyUpdate, getItemsFromCache, translateTexts } from '../utils/utils';
 
 dotenv.config();
 
 const youtubeApi: AxiosInstance = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3/',
 });
-
-const CACHE_DIR = path.join(__dirname, '..', 'cache');
-const CACHE_FILE_EN = path.join(CACHE_DIR, 'videos_en.json');
-const CACHE_FILE_PT = path.join(CACHE_DIR, 'videos_pt.json');
 
 interface Video {
   id: string;
@@ -28,42 +21,9 @@ interface Video {
   tags: string[];
 }
 
-const loadCache = (filePath: string): Record<string, any> => {
-  try {
-    if (fs.existsSync(filePath)) {
-      const cacheData = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(cacheData);
-    }
-    return {};
-  } catch (error) {
-    console.error(`Error loading cache from ${filePath}:`, error);
-    return {};
-  }
-};
-
-const saveCache = (filePath: string, cache: any): void => {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(cache, null, 2));
-    console.log(`Cache saved to ${filePath}`);
-  } catch (error) {
-    console.error(`Error saving cache to ${filePath}:`, error);
-  }
-};
-
-const translateText = async (texts: string[], targetLanguage: string): Promise<string[]> => {
-  try {
-    const translationPromises = texts.map(text => translate(text, { to: targetLanguage }));
-    const translations = await Promise.all(translationPromises);
-    return translations.map(result => result.text);
-  } catch (error) {
-    console.error('Translation error:', error);
-    return texts;
-  }
-};
-
 const updateVideosCache = async (language: string): Promise<void> => {
   try {
-    const cacheFile = language === 'en' ? CACHE_FILE_EN : CACHE_FILE_PT;
+    const cacheFile = getCacheFilePath(language, 'videos');
     const cache = loadCache(cacheFile);
 
     const { data } = await youtubeApi.get('search', {
@@ -73,7 +33,7 @@ const updateVideosCache = async (language: string): Promise<void> => {
         part: 'snippet',
         order: 'date',
         maxResults: 10,
-        type: 'video', 
+        type: 'video',
       },
     });
 
@@ -87,7 +47,7 @@ const updateVideosCache = async (language: string): Promise<void> => {
       params: {
         key: process.env.YOUTUBE_API_KEY,
         id: videoIds,
-        part: 'snippet,contentDetails', 
+        part: 'snippet,contentDetails',
       },
     });
 
@@ -122,8 +82,8 @@ const updateVideosCache = async (language: string): Promise<void> => {
 
         if (language === 'en') {
           const textsToTranslate = [filteredVideo.title, filteredVideo.description, ...filteredVideo.tags];
-          const translatedTexts = await translateText(textsToTranslate, 'en');
-          
+          const translatedTexts = await translateTexts(textsToTranslate, 'en');
+
           filteredVideo.title = translatedTexts[0];
           filteredVideo.description = translatedTexts[1];
           filteredVideo.tags = translatedTexts.slice(2);
@@ -143,42 +103,12 @@ const updateVideosCache = async (language: string): Promise<void> => {
   }
 };
 
-const scheduleDailyUpdate = () => {
+scheduleDailyUpdate(() => updateVideosCache('en'), '0 16 * * *');
+scheduleDailyUpdate(() => updateVideosCache('pt'), '0 17 * * *');
 
-  cron.schedule('0 16 * * *', async () => {
-    try {
-      await updateVideosCache('en');
-      await updateVideosCache('pt'); 
-      console.log('Video cache updated successfully at 16:00 PM');
-    } catch (error) {
-      console.error('Error updating cache:', error);
-    }
-  }, {
-    timezone: 'America/Sao_Paulo' 
-  });
-};
-
-
-scheduleDailyUpdate();
+// updateVideosCache('en')
+// updateVideosCache('pt')
 
 export const getYouTubeVideos = async (language: string): Promise<Video[]> => {
-  try {
-    const cacheFile = language === 'en' ? CACHE_FILE_EN : CACHE_FILE_PT;
-    const cache = loadCache(cacheFile);
-    const lastUpdateKey = 'lastUpdate';
-
-    const today = new Date().toLocaleDateString();
-    const lastUpdate = cache[lastUpdateKey];
-
-   
-    if (!lastUpdate || lastUpdate !== today) {
-    
-      console.log('Cache not updated today. It will be updated at 10:00 AM.');
-    }
-
-    return cache.videos || [];
-  } catch (error) {
-    console.error('Error fetching YouTube videos:', error);
-    return [];
-  }
+  return getItemsFromCache<Video>(language, 'videos');
 };

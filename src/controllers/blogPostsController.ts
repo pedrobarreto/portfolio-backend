@@ -1,4 +1,4 @@
-import { getDevApi } from "../services/DevApi";
+import { getDevPosts } from '../services/DevApi';
 
 const getPosts = async (req: any, res: any) => {
   const { pagination, language } = req.body;
@@ -6,7 +6,7 @@ const getPosts = async (req: any, res: any) => {
   const lang = language || 'pt';
 
   try {
-    const posts = await getDevApi({ endpoint: 'articles', pagination }, lang);
+    const posts = await getDevPosts({ endpoint: 'articles', pagination }, lang);
     res.status(200).json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
