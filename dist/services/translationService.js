@@ -9,17 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DevApi_1 = require("../services/DevApi");
-const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pagination, language } = req.body;
-    const lang = language || 'pt';
-    try {
-        const posts = yield (0, DevApi_1.getDevApi)({ endpoint: 'articles', pagination }, lang);
-        res.status(200).json(posts);
-    }
-    catch (error) {
-        console.error('Error fetching posts:', error);
-        res.status(500).json({ error: 'Failed to fetch posts' });
-    }
+exports.translateText = void 0;
+const google_translate_api_1 = require("@vitalets/google-translate-api");
+const translateText = (text, targetLanguage) => __awaiter(void 0, void 0, void 0, function* () {
+    const { text: translatedText } = yield (0, google_translate_api_1.translate)(text, { to: targetLanguage });
+    return translatedText;
 });
-exports.default = getPosts;
+exports.translateText = translateText;

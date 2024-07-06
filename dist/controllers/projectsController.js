@@ -9,17 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DevApi_1 = require("../services/DevApi");
-const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pagination, language } = req.body;
-    const lang = language || 'pt';
+const GitHubApi_1 = require("../services/GitHubApi");
+const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { language = 'en', page = 1 } = req.body;
     try {
-        const posts = yield (0, DevApi_1.getDevApi)({ endpoint: 'articles', pagination }, lang);
-        res.status(200).json(posts);
+        const projects = yield (0, GitHubApi_1.requestProjects)('/repos', language, page);
+        res.json(projects);
     }
     catch (error) {
-        console.error('Error fetching posts:', error);
-        res.status(500).json({ error: 'Failed to fetch posts' });
+        console.error('Error fetching projects:', error);
+        res.status(500).json({ message: 'Error fetching projects' });
     }
 });
-exports.default = getPosts;
+exports.default = getProjects;

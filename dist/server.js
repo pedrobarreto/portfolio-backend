@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const blogPostsController_1 = __importDefault(require("./controllers/blogPostsController"));
+const projectsController_1 = __importDefault(require("./controllers/projectsController"));
+const videosController_1 = __importDefault(require("./controllers/videosController"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -14,4 +16,6 @@ app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
 const port = 10000;
 app.post('/posts', blogPostsController_1.default);
+app.post('/projects', projectsController_1.default);
+app.post('/videos', videosController_1.default);
 app.listen(port, () => console.log(`funcionando na porta: ${port}!`));
