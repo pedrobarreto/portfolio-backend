@@ -148,14 +148,14 @@ const updatePostsCache = async (language: string): Promise<void> => {
 const scheduleDailyUpdate = () => {
   cron.schedule('0 5 * * *', async () => {
     try {
-      await updatePostsCache('en'); // Atualiza posts em inglês
-      await updatePostsCache('pt'); // Atualiza posts em português
-      console.log('Cache updated successfully at 5:00 AM');
+      await updatePostsCache('en'); 
+      await updatePostsCache('pt'); 
+      console.log('Post cache updated successfully at 5:00 AM');
     } catch (error) {
       console.error('Error updating cache:', error);
     }
   }, {
-    timezone: 'America/Sao_Paulo' // Fuso horário
+    timezone: 'America/Sao_Paulo' 
   });
 };
 
