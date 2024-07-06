@@ -61,8 +61,8 @@ const updateProjectsCache = (language) => __awaiter(void 0, void 0, void 0, func
         throw error;
     }
 });
-(0, utils_1.scheduleDailyUpdate)(() => updateProjectsCache('en'), '0 9 * * *');
-(0, utils_1.scheduleDailyUpdate)(() => updateProjectsCache('pt'), '0 10 * * *');
+// scheduleDailyUpdate(() => updateProjectsCache('en'), '0 9 * * *');
+// scheduleDailyUpdate(() => updateProjectsCache('pt'), '0 10 * * *');
 // updateProjectsCache('en')
 // updateProjectsCache('pt')
 const requestProjects = (language) => __awaiter(void 0, void 0, void 0, function* () {

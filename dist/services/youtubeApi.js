@@ -87,8 +87,8 @@ const updateVideosCache = (language) => __awaiter(void 0, void 0, void 0, functi
         throw error;
     }
 });
-(0, utils_1.scheduleDailyUpdate)(() => updateVideosCache('en'), '0 16 * * *');
-(0, utils_1.scheduleDailyUpdate)(() => updateVideosCache('pt'), '0 17 * * *');
+// scheduleDailyUpdate(() => updateVideosCache('en'), '0 16 * * *');
+// scheduleDailyUpdate(() => updateVideosCache('pt'), '0 17 * * *');
 // updateVideosCache('en')
 // updateVideosCache('pt')
 const getYouTubeVideos = (language) => __awaiter(void 0, void 0, void 0, function* () {

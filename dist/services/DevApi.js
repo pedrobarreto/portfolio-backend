@@ -80,10 +80,10 @@ const updatePostsCache = (language) => __awaiter(void 0, void 0, void 0, functio
         throw error;
     }
 });
-(0, utils_1.scheduleDailyUpdate)(() => updatePostsCache('en'), '0 5 * * *');
-(0, utils_1.scheduleDailyUpdate)(() => updatePostsCache('pt'), '0 6 * * *');
-updatePostsCache('en');
-updatePostsCache('pt');
+// scheduleDailyUpdate(() => updatePostsCache('en'), '0 5 * * *');
+// scheduleDailyUpdate(() => updatePostsCache('pt'), '0 6 * * *');
+// updatePostsCache('en');
+// updatePostsCache('pt');
 const getDevPosts = ({ endpoint, pagination }, language) => __awaiter(void 0, void 0, void 0, function* () {
     const cacheFile = (0, utils_1.getCacheFilePath)(language, 'posts');
     const cache = (0, utils_1.loadCache)(cacheFile) || { posts: [], lastUpdate: '' };
