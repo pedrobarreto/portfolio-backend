@@ -14,7 +14,7 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pagination, language } = req.body;
     const lang = language || 'pt';
     try {
-        const posts = yield (0, DevApi_1.getDevApi)({ endpoint: 'articles', pagination }, lang);
+        const posts = yield (0, DevApi_1.getDevPosts)({ endpoint: 'articles', pagination }, lang);
         res.status(200).json(posts);
     }
     catch (error) {

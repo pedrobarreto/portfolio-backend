@@ -13,7 +13,7 @@ const GitHubApi_1 = require("../services/GitHubApi");
 const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { language = 'en', page = 1 } = req.body;
     try {
-        const projects = yield (0, GitHubApi_1.requestProjects)('/repos', language, page);
+        const projects = yield (0, GitHubApi_1.requestProjects)(language);
         res.json(projects);
     }
     catch (error) {

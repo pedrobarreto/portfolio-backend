@@ -12,30 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDevApi = exports.translateText = void 0;
+exports.getDevPosts = void 0;
 const axios_1 = __importDefault(require("axios"));
-const google_translate_api_1 = require("@vitalets/google-translate-api");
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-const node_cron_1 = __importDefault(require("node-cron"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const utils_1 = require("../utils/utils");
 dotenv_1.default.config();
 const devApi = axios_1.default.create({
     baseURL: 'https://dev.to/api/',
 });
-const CACHE_DIR = path_1.default.join(__dirname, '..', 'cache');
-const CACHE_FILE_EN = path_1.default.join(CACHE_DIR, 'posts.json');
-const CACHE_FILE_PT = path_1.default.join(CACHE_DIR, 'posts_pt.json');
-const loadCache = (filePath) => {
-    if (fs_1.default.existsSync(filePath)) {
-        const cacheData = fs_1.default.readFileSync(filePath, 'utf-8');
-        return JSON.parse(cacheData);
-    }
-    return {};
-};
-const saveCache = (filePath, cache) => {
-    fs_1.default.writeFileSync(filePath, JSON.stringify(cache, null, 2));
-};
 const filterPostFields = (post) => ({
     type_of: post.type_of,
     id: post.id,
@@ -63,94 +47,53 @@ const filterPostFields = (post) => ({
     tags: post.tags,
     user: post.user,
 });
-const translateText = (text, targetLanguage) => __awaiter(void 0, void 0, void 0, function* () {
-    const { text: translatedText } = yield (0, google_translate_api_1.translate)(text, { to: targetLanguage });
-    return translatedText;
-});
-exports.translateText = translateText;
 const updatePostsCache = (language) => __awaiter(void 0, void 0, void 0, function* () {
-    const cacheFile = language === 'en' ? CACHE_FILE_EN : CACHE_FILE_PT;
-    const cache = loadCache(cacheFile);
-    const headers = { 'api-key': process.env.APIKEY };
-    const { data } = yield devApi.get('articles?username=pedrobarreto', { headers });
-    if (!Array.isArray(data)) {
-        throw new Error('Unexpected response format');
-    }
-    const textsToTranslate = [];
-    const updatedPosts = data.filter((post) => post.id !== 1723351).map((post) => {
-        const filteredPost = filterPostFields(post);
-        if (language === 'en' && filteredPost.description) {
-            textsToTranslate.push(filteredPost.title);
-            textsToTranslate.push(filteredPost.description);
-            filteredPost.title = '';
-            filteredPost.description = '';
+    try {
+        const cacheFile = (0, utils_1.getCacheFilePath)(language, 'posts');
+        const cache = (0, utils_1.loadCache)(cacheFile) || { posts: [] };
+        const headers = { 'api-key': process.env.APIKEY };
+        const { data } = yield devApi.get('articles?username=pedrobarreto', { headers });
+        if (!Array.isArray(data)) {
+            throw new Error('Unexpected response format');
         }
-        return filteredPost;
-    });
-    if (textsToTranslate.length > 0) {
-        const translatedTexts = yield (0, exports.translateText)(textsToTranslate.join('\n'), 'en');
-        const translatedLines = translatedTexts.split('\n');
-        let index = 0;
-        updatedPosts.forEach((post) => {
-            if (post.title === '') {
-                post.title = translatedLines[index];
-                index++;
-            }
-            if (post.description === '') {
-                post.description = translatedLines[index];
-                index++;
-            }
-        });
+        const updatedPosts = data
+            .filter((post) => post.id !== 1723351)
+            .map((post) => filterPostFields(post));
+        if (language === 'en') {
+            const postsEn = yield Promise.all(updatedPosts.map((project) => __awaiter(void 0, void 0, void 0, function* () {
+                if (project.description) {
+                    project.description = yield (0, utils_1.translateText)(project.description, 'en');
+                    project.title = yield (0, utils_1.translateText)(project.title, 'en');
+                }
+                return project;
+            })));
+            cache.posts = postsEn;
+        }
+        else {
+            cache.posts = updatedPosts;
+        }
+        cache.lastUpdate = new Date().toLocaleDateString();
+        (0, utils_1.saveCache)(cacheFile, cache);
     }
-    cache.posts = updatedPosts;
-    saveCache(cacheFile, cache);
+    catch (error) {
+        console.error('Error updating cache:', error);
+        throw error;
+    }
 });
-const scheduleDailyUpdate = () => {
-    node_cron_1.default.schedule('0 5 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield updatePostsCache('en');
-            yield updatePostsCache('pt');
-            console.log('Post cache updated successfully at 5:00 AM');
-        }
-        catch (error) {
-            console.error('Error updating cache:', error);
-        }
-    }), {
-        timezone: 'America/Sao_Paulo'
-    });
-};
-scheduleDailyUpdate();
-const getDevApi = ({ endpoint, pagination }, language) => __awaiter(void 0, void 0, void 0, function* () {
-    const cacheFile = language === 'en' ? CACHE_FILE_EN : CACHE_FILE_PT;
-    const cache = loadCache(cacheFile);
+(0, utils_1.scheduleDailyUpdate)(() => updatePostsCache('en'), '0 5 * * *');
+(0, utils_1.scheduleDailyUpdate)(() => updatePostsCache('pt'), '0 6 * * *');
+updatePostsCache('en');
+updatePostsCache('pt');
+const getDevPosts = ({ endpoint, pagination }, language) => __awaiter(void 0, void 0, void 0, function* () {
+    const cacheFile = (0, utils_1.getCacheFilePath)(language, 'posts');
+    const cache = (0, utils_1.loadCache)(cacheFile) || { posts: [], lastUpdate: '' };
     const cacheKey = `${endpoint}-${language}-${pagination}`;
-    const lastUpdateKey = 'lastUpdate';
     const today = new Date().toLocaleDateString();
-    const lastUpdate = cache[lastUpdateKey];
-    if (!lastUpdate || lastUpdate !== today) {
+    if (!cache.lastUpdate || cache.lastUpdate !== today) {
         yield updatePostsCache(language);
-        cache[lastUpdateKey] = today;
-        saveCache(cacheFile, cache);
+        cache.lastUpdate = today;
+        (0, utils_1.saveCache)(cacheFile, cache);
     }
-    if (cache[cacheKey]) {
-        return cache[cacheKey];
-    }
-    const params = { per_page: 6, page: pagination };
-    const headers = { 'api-key': process.env.APIKEY };
-    const { data } = yield devApi.get(`articles?username=pedrobarreto`, { params, headers });
-    if (!Array.isArray(data)) {
-        throw new Error('Unexpected response format');
-    }
-    const posts = yield Promise.all(data.filter((post) => post.id !== 1723351).map((post) => __awaiter(void 0, void 0, void 0, function* () {
-        const filteredPost = filterPostFields(post);
-        if (language === 'en' && filteredPost.description) {
-            filteredPost.description = yield (0, exports.translateText)(filteredPost.description, 'en');
-            filteredPost.title = yield (0, exports.translateText)(filteredPost.title, 'en');
-        }
-        return filteredPost;
-    })));
-    cache[cacheKey] = posts;
-    saveCache(cacheFile, cache);
-    return posts;
+    return cache[cacheKey] || [];
 });
-exports.getDevApi = getDevApi;
+exports.getDevPosts = getDevPosts;
