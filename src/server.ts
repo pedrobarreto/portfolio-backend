@@ -10,10 +10,10 @@ dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
-// app.use(cors());
+app.use(cors());
 const port = 10000;
 
-// Middleware para verificar a API key
+
 const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const apiKey = req.headers['x-api-key'];
   if (apiKey && apiKey === process.env.APIKEY) {
