@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDevPosts = void 0;
+exports.getDevToPosts = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const utils_1 = require("../utils/utils");
@@ -84,16 +84,7 @@ const updatePostsCache = (language) => __awaiter(void 0, void 0, void 0, functio
 // scheduleDailyUpdate(() => updatePostsCache('pt'), '0 6 * * *');
 // updatePostsCache('en');
 // updatePostsCache('pt');
-const getDevPosts = ({ endpoint, pagination }, language) => __awaiter(void 0, void 0, void 0, function* () {
-    const cacheFile = (0, utils_1.getCacheFilePath)(language, 'posts');
-    const cache = (0, utils_1.loadCache)(cacheFile) || { posts: [], lastUpdate: '' };
-    const cacheKey = `${endpoint}-${language}-${pagination}`;
-    const today = new Date().toLocaleDateString();
-    if (!cache.lastUpdate || cache.lastUpdate !== today) {
-        yield updatePostsCache(language);
-        cache.lastUpdate = today;
-        (0, utils_1.saveCache)(cacheFile, cache);
-    }
-    return cache[cacheKey] || [];
+const getDevToPosts = (language) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, utils_1.getItemsFromCache)(language, 'posts');
 });
-exports.getDevPosts = getDevPosts;
+exports.getDevToPosts = getDevToPosts;
