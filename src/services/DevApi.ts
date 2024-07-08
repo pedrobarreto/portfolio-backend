@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestHeaders } from 'axios';
 import dotenv from 'dotenv';
-import { loadCache, saveCache, translateTexts, getCacheFilePath, scheduleDailyUpdate, translateText } from '../utils/utils';
+import { loadCache, saveCache, translateTexts, getCacheFilePath, scheduleDailyUpdate, translateText, getItemsFromCache } from '../utils/utils';
 
 dotenv.config();
 
@@ -120,17 +120,6 @@ const updatePostsCache = async (language: string): Promise<void> => {
 // updatePostsCache('pt');
 
 
-export const getDevPosts = async ({ endpoint, pagination }: any, language: string): Promise<Post[]> => {
-  const cacheFile = getCacheFilePath(language, 'posts');
-  const cache = loadCache(cacheFile) || { posts: [], lastUpdate: '' };
-  const cacheKey = `${endpoint}-${language}-${pagination}`;
-  const today = new Date().toLocaleDateString();
-  
-  if (!cache.lastUpdate || cache.lastUpdate !== today) {
-    await updatePostsCache(language);
-    cache.lastUpdate = today;
-    saveCache(cacheFile, cache);
-  }
-
-  return cache[cacheKey] || [];
+export const getDevToPosts = async (language: string): Promise<Post[]> => {
+  return getItemsFromCache<Post>(language, 'posts');
 };
