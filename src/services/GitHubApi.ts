@@ -47,7 +47,9 @@ const updateProjectsCache = async (language: string): Promise<void> => {
       throw new Error('Unexpected response format');
     }
 
-    const projects: Project[] = data.map((project: any) => filterProjectFields(project));
+    const projects: Project[] = data
+    .map((project: any) => filterProjectFields(project))
+    .filter((project: Project) => project.description);
 
     if (language === 'pt') {
       const projectsPt: Project[] = await Promise.all(
@@ -76,7 +78,7 @@ const updateProjectsCache = async (language: string): Promise<void> => {
 // scheduleDailyUpdate(() => updateProjectsCache('pt'), '0 10 * * *');
 
 // updateProjectsCache('en')
-// updateProjectsCache('pt')
+updateProjectsCache('pt')
 
 
 export const requestProjects = async (language: string): Promise<Project[]> => {

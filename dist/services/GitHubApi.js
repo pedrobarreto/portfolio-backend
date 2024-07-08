@@ -41,7 +41,9 @@ const updateProjectsCache = (language) => __awaiter(void 0, void 0, void 0, func
         if (!Array.isArray(data)) {
             throw new Error('Unexpected response format');
         }
-        const projects = data.map((project) => filterProjectFields(project));
+        const projects = data
+            .map((project) => filterProjectFields(project))
+            .filter((project) => project.description);
         if (language === 'pt') {
             const projectsPt = yield Promise.all(projects.map((project) => __awaiter(void 0, void 0, void 0, function* () {
                 if (project.description) {
@@ -65,7 +67,7 @@ const updateProjectsCache = (language) => __awaiter(void 0, void 0, void 0, func
 // scheduleDailyUpdate(() => updateProjectsCache('en'), '0 9 * * *');
 // scheduleDailyUpdate(() => updateProjectsCache('pt'), '0 10 * * *');
 // updateProjectsCache('en')
-// updateProjectsCache('pt')
+updateProjectsCache('pt');
 const requestProjects = (language) => __awaiter(void 0, void 0, void 0, function* () {
     return (0, utils_1.getItemsFromCache)(language, 'projects');
 });
