@@ -31,6 +31,7 @@ const filterProjectFields = (project) => ({
     updated_at: project.updated_at,
     id: project.id,
     private: project.private,
+    tags: project.topics || [],
 });
 const updateProjectsCache = (language) => __awaiter(void 0, void 0, void 0, function* () {
     try {

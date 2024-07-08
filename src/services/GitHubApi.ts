@@ -18,6 +18,7 @@ interface Project {
   updated_at: string;
   id: number;
   private: boolean;
+  tags: string[]; 
 }
 
 const filterProjectFields = (project: any): Project => ({
@@ -26,12 +27,14 @@ const filterProjectFields = (project: any): Project => ({
   html_url: project.html_url,
   url: project.url,
   fork: project.fork,
-  description: project.description, // Assuming project.description is a string
+  description: project.description, 
   created_at: project.created_at,
   updated_at: project.updated_at,
   id: project.id,
   private: project.private,
+  tags: project.topics || [],
 });
+
 
 const updateProjectsCache = async (language: string): Promise<void> => {
   try {

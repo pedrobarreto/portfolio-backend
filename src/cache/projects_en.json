@@ -10,7 +10,14 @@
       "created_at": "2022-07-26T21:40:26Z",
       "updated_at": "2024-07-06T14:52:24Z",
       "id": 518224625,
-      "private": false
+      "private": false,
+      "tags": [
+        "docker",
+        "java",
+        "mysql",
+        "rest-api",
+        "spring-boot"
+      ]
     },
     {
       "name": "aumor-perfeito-app",
@@ -22,7 +29,14 @@
       "created_at": "2024-05-27T17:59:19Z",
       "updated_at": "2024-07-06T14:50:19Z",
       "id": 806699623,
-      "private": false
+      "private": false,
+      "tags": [
+        "aws-ec2",
+        "aws-s3",
+        "nodejs",
+        "python3",
+        "react-native"
+      ]
     },
     {
       "name": "conference-speakers-api",
@@ -34,7 +48,8 @@
       "created_at": "2022-03-28T17:58:21Z",
       "updated_at": "2022-03-28T17:59:59Z",
       "id": 475119192,
-      "private": false
+      "private": false,
+      "tags": []
     },
     {
       "name": "css-flexbox-html-form",
@@ -46,7 +61,11 @@
       "created_at": "2022-03-29T14:49:14Z",
       "updated_at": "2022-03-29T14:51:02Z",
       "id": 475489109,
-      "private": false
+      "private": false,
+      "tags": [
+        "flexbox-css",
+        "html-css-javascript"
+      ]
     },
     {
       "name": "curriculoats",
@@ -58,7 +77,17 @@
       "created_at": "2024-06-07T13:23:19Z",
       "updated_at": "2024-07-06T14:49:49Z",
       "id": 811870196,
-      "private": false
+      "private": false,
+      "tags": [
+        "ats-resume",
+        "curriculo",
+        "cvbuilder",
+        "gerador",
+        "javascript",
+        "nextjs",
+        "resume",
+        "resume-template"
+      ]
     },
     {
       "name": "frontend-store-checkout",
@@ -70,7 +99,11 @@
       "created_at": "2022-03-29T14:59:49Z",
       "updated_at": "2024-07-05T21:04:34Z",
       "id": 475493682,
-      "private": false
+      "private": false,
+      "tags": [
+        "rest-api",
+        "vanilla-javascript"
+      ]
     },
     {
       "name": "gentrop",
@@ -82,7 +115,8 @@
       "created_at": "2022-05-06T00:16:58Z",
       "updated_at": "2022-05-06T21:31:06Z",
       "id": 489163643,
-      "private": false
+      "private": false,
+      "tags": []
     },
     {
       "name": "Java-bootcamp-exercises",
@@ -94,7 +128,15 @@
       "created_at": "2023-02-06T18:40:16Z",
       "updated_at": "2024-07-06T14:52:00Z",
       "id": 598262980,
-      "private": false
+      "private": false,
+      "tags": [
+        "docker",
+        "exercises",
+        "java",
+        "junit-test",
+        "quarkus",
+        "springboot"
+      ]
     },
     {
       "name": "js-color-palette",
@@ -106,7 +148,8 @@
       "created_at": "2022-03-28T18:20:51Z",
       "updated_at": "2022-03-28T18:22:11Z",
       "id": 475127065,
-      "private": false
+      "private": false,
+      "tags": []
     },
     {
       "name": "next-ts-blog",
@@ -118,7 +161,15 @@
       "created_at": "2022-04-07T19:18:55Z",
       "updated_at": "2024-07-06T14:51:00Z",
       "id": 479119099,
-      "private": false
+      "private": false,
+      "tags": [
+        "expressjs",
+        "infinite-scroll",
+        "nextjs",
+        "nodejs",
+        "tailwindcss",
+        "typescript"
+      ]
     },
     {
       "name": "online-store-rest-api",
@@ -130,7 +181,13 @@
       "created_at": "2022-03-29T20:01:38Z",
       "updated_at": "2024-07-06T14:52:52Z",
       "id": 475601456,
-      "private": false
+      "private": false,
+      "tags": [
+        "node-js",
+        "rest-api",
+        "restful-api",
+        "typescript"
+      ]
     },
     {
       "name": "pedrobarreto",
@@ -142,7 +199,8 @@
       "created_at": "2022-03-28T18:37:10Z",
       "updated_at": "2024-06-10T14:20:15Z",
       "id": 475132681,
-      "private": false
+      "private": false,
+      "tags": []
     },
     {
       "name": "portfolio",
@@ -154,7 +212,13 @@
       "created_at": "2024-01-25T04:54:59Z",
       "updated_at": "2024-07-06T14:49:11Z",
       "id": 748014205,
-      "private": false
+      "private": false,
+      "tags": [
+        "axios",
+        "nextjs",
+        "rest-api",
+        "tailwindcss"
+      ]
     },
     {
       "name": "portfolio-backend",
@@ -164,9 +228,10 @@
       "fork": false,
       "description": null,
       "created_at": "2024-01-23T14:45:52Z",
-      "updated_at": "2024-07-06T15:24:12Z",
+      "updated_at": "2024-07-08T11:32:12Z",
       "id": 747239167,
-      "private": false
+      "private": false,
+      "tags": []
     },
     {
       "name": "react-chatbot",
@@ -178,7 +243,14 @@
       "created_at": "2021-12-16T12:01:59Z",
       "updated_at": "2024-07-06T14:53:33Z",
       "id": 438974070,
-      "private": false
+      "private": false,
+      "tags": [
+        "context-api",
+        "mysql",
+        "node",
+        "react",
+        "styled-components"
+      ]
     },
     {
       "name": "react-trivia-game",
@@ -190,7 +262,12 @@
       "created_at": "2022-04-05T15:46:57Z",
       "updated_at": "2024-07-06T14:51:17Z",
       "id": 478197396,
-      "private": false
+      "private": false,
+      "tags": [
+        "reactjs",
+        "redux-thunk",
+        "tailwindcss"
+      ]
     },
     {
       "name": "sequelize-blogs-api",
@@ -202,7 +279,13 @@
       "created_at": "2022-03-28T18:08:04Z",
       "updated_at": "2024-07-06T14:53:13Z",
       "id": 475122619,
-      "private": false
+      "private": false,
+      "tags": [
+        "api-server",
+        "express-js",
+        "node-js",
+        "sequelize-orm"
+      ]
     },
     {
       "name": "trybe-projects",
@@ -214,7 +297,18 @@
       "created_at": "2023-09-08T12:34:15Z",
       "updated_at": "2024-07-06T14:51:38Z",
       "id": 688941627,
-      "private": false
+      "private": false,
+      "tags": [
+        "docker",
+        "exercises",
+        "javascript",
+        "jest-tests",
+        "mongodb",
+        "mysql",
+        "nodejs",
+        "react",
+        "redux"
+      ]
     },
     {
       "name": "vegas21",
@@ -226,8 +320,13 @@
       "created_at": "2021-08-24T20:07:58Z",
       "updated_at": "2024-07-05T21:29:29Z",
       "id": 399591827,
-      "private": false
+      "private": false,
+      "tags": [
+        "javascript",
+        "javascript-game",
+        "vanilla-js"
+      ]
     }
   ],
-  "lastUpdate": "7/6/2024"
+  "lastUpdate": "7/8/2024"
 }
