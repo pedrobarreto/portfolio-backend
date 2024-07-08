@@ -74,11 +74,11 @@ const updateProjectsCache = async (language: string): Promise<void> => {
   }
 };
 
-// scheduleDailyUpdate(() => updateProjectsCache('en'), '0 9 * * *');
-// scheduleDailyUpdate(() => updateProjectsCache('pt'), '0 10 * * *');
+scheduleDailyUpdate(() => updateProjectsCache('en'), '0 9 * * *');
+scheduleDailyUpdate(() => updateProjectsCache('pt'), '0 10 * * *');
 
 // updateProjectsCache('en')
-updateProjectsCache('pt')
+// updateProjectsCache('pt')
 
 
 export const requestProjects = async (language: string): Promise<Project[]> => {

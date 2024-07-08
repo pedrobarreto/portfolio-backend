@@ -113,8 +113,8 @@ const updatePostsCache = async (language: string): Promise<void> => {
   }
 };
 
-// scheduleDailyUpdate(() => updatePostsCache('en'), '0 5 * * *');
-// scheduleDailyUpdate(() => updatePostsCache('pt'), '0 6 * * *');
+scheduleDailyUpdate(() => updatePostsCache('en'), '0 5 * * *');
+scheduleDailyUpdate(() => updatePostsCache('pt'), '0 6 * * *');
 
 // updatePostsCache('en');
 // updatePostsCache('pt');
