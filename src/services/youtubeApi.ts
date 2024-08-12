@@ -103,11 +103,11 @@ const updateVideosCache = async (language: string): Promise<void> => {
   }
 };
 
-// scheduleDailyUpdate(() => updateVideosCache('en'), '0 16 * * *');
-// scheduleDailyUpdate(() => updateVideosCache('pt'), '0 17 * * *');
+ // scheduleDailyUpdate(() => updateVideosCache('en'), '0 16 * * *');
+ scheduleDailyUpdate(() => updateVideosCache('pt'), '0 17 * * *');
 
 // updateVideosCache('en')
-// updateVideosCache('pt')
+updateVideosCache('pt')
 
 export const getYouTubeVideos = async (language: string): Promise<Video[]> => {
   return getItemsFromCache<Video>(language, 'videos');
