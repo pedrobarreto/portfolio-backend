@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 app.use(cors());
 const port = 10000;
 
-
 const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const apiKey = req.headers['x-api-key'];
   if (apiKey && apiKey === process.env.APIKEY) {
@@ -23,6 +22,9 @@ const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ status: 'UP', message: 'Servidor funcionando corretamente!' });
+});
 
 app.post('/posts', apiKeyMiddleware, getPosts);
 app.post('/projects', apiKeyMiddleware, getProjects);
